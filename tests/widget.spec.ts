@@ -7,11 +7,13 @@ test.describe('Uchi.ru widget ', () => {
   test.beforeEach(async ({page}) => {
     widgetPage = new WidgetPage(page);
 
-    // open uchi.ru main page
-    await page.goto('/');
+    // close cookies popup when it appears (it slides in with .show class)
+    await page.addLocatorHandler(page.locator('._UCHI_COOKIE__wrap.show ._UCHI_COOKIE__button'), async (button) => {
+      await button.click();
+    });
 
-    // close cookies popup
-    await page.click('._UCHI_COOKIE__button');
+    // open uchi.ru main page
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
   });
 
   test('opens', async ({page}) => {
@@ -29,6 +31,6 @@ test.describe('Uchi.ru widget ', () => {
 
     await widgetPage.clickWriteToUs();
 
-    expect(await widgetPage.getTitle()).toEqual('Связь с поддержкой');
+    await expect(widgetPage.getTitle()).toHaveText('Связь с поддержкой');
   });
 });
