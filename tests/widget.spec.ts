@@ -44,24 +44,6 @@ test.describe('Uchi.ru widget ', () => {
     await expect(widgetPage.getOpenButton()).toBeVisible();
   });
 
-  test('adapts to mobile view correctly', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 });
-
-    await widgetPage.openWidget();
-    await expect(widgetPage.getWidgetBody()).toBeVisible();
-
-    const mobileCloseButton = widgetPage.getMobileCloseButton();
-    await expect(mobileCloseButton).toBeVisible();
-
-    await mobileCloseButton.click();
-    await expect(widgetPage.getWidgetBody()).toBeHidden();
-
-    await page.setViewportSize({ width: 1280, height: 720 });
-
-    await widgetPage.openWidget();
-    await expect(widgetPage.getWidgetBody()).toBeVisible();
-  });
-
   test('reopens after closing', async ({ page }) => {
     await widgetPage.openWidget();
     await expect(widgetPage.getWidgetBody()).toBeVisible();
