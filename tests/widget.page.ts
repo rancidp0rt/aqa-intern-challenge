@@ -56,7 +56,7 @@ export class WidgetPage {
     }
 
     getMobileCloseButton() {
-        retrun this.wrapper().locator(WidgetPage.selector.BUTTON_CLOSE);
+        return this.wrapper().locator(WidgetPage.selector.BUTTON_CLOSE);
     }
 }
 
