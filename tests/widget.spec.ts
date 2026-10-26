@@ -54,4 +54,10 @@ test.describe('Uchi.ru widget ', () => {
     await widgetPage.openWidget();
     await expect(widgetPage.getWidgetBody()).toBeVisible();
   });
+  
+  test('shows feedback button', async ({ page }) => {
+    await widgetPage.oenWidget();
+
+    await expect(page.locator('[data-test=button_feedback_form]').toBeVisible();
+  });
 });
