@@ -61,4 +61,15 @@ test.describe('Uchi.ru widget ', () => {
     await widgetPage.openWidget();
     await expect(widgetPage.getWidgetBody()).toBeVisible();
   });
+
+  test('reopens after closing', async () => {
+    await widgetPage.openWidget();
+    await expect(widgetPage.getWidgetBody()).toBeVisible();
+
+    await widgetPage.closeWidget();
+    await expect(widgetPage.getWidgetBody()).toBeHidden();
+
+    await widgetPage.openWidget();
+    await expect(widgetPage.getWidgetBody()).toBeVisible();
+  });
 });
