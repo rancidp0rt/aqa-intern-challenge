@@ -11,6 +11,13 @@ enum WidgetPageSelectors {
     ARTICLE_POPULAR_TITLE = '[class^=popularTitle__]',
     ARTICLE_POPULAR_LIST = `${ARTICLE_POPULAR_TITLE} + ul[class^=articles__]`,
     ARTICLE_POPULAR_LIST_ITEM = `${ARTICLE_POPULAR_LIST} > li`,
+    ARTICLE_TITLE = '[class^=article__] > p[class^=title__]',
+    ARTICLE_TEXT = '#articleWrapper',
+    ARTICLE_LINK = '[data-test=knowledgeBaseRedirect]',
+    BUTTON_BACK = '[data-test=button_back]',
+    SEARCH_INPUT = '[class^=search__] input',
+    SEARCH_FOUND_TITLE = '[class^=found__] > [class^=title__]',
+    SEARCH_RESULT_ITEM = '[class^=found__] ul[class^=articles__] > li',
 }
 
 export class WidgetPage {
@@ -57,6 +64,38 @@ export class WidgetPage {
 
     getMobileCloseButton() {
         return this.wrapper().locator(WidgetPage.selector.BUTTON_CLOSE);
+    }
+    
+    getPopularArticleItems() {
+        return this.wrapper().locator(WidgetPage.selector.ARTICLE_POPULAR_LIST_ITEM);
+    }
+
+    getArticleTitle() {
+        return this.wrapper().locator(WidgetPage.selector.ARTICLE_TITLE);
+    }
+
+    getArticleText() {
+        return this.wrapper().locator(WidgetPage.selector.ARTICLE_TEXT);
+    }
+
+    getArticleLink() {
+        return this.wrapper().locator(WidgetPage.selector.ARTICLE_LINK);
+    }
+
+    async clickBack() {
+        return this.wrapper().locator(WidgetPage.selector.BUTTON_BACK).click();
+    }
+
+    async search(text: string) {
+        return this.wrapper().locator(WidgetPage.selector.SEARCH_INPUT).fill(text);
+    }
+
+    getSearchFoundTitle() {
+        return this.wrapper().locator(WidgetPage.selector.SEARCH_FOUND_TITLE);
+    }
+
+    getSearchResults() {
+        return this.wrapper().locator(WidgetPage.selector.SEARCH_RESULT_ITEM);
     }
 }
 
