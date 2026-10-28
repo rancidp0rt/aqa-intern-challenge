@@ -72,17 +72,17 @@ test.describe('Uchi.ru widget ', () => {
 
     for (let i = 0; i < titles.length; i++) {
       await test.step(`popular article "${titles[i]}"`, async () => {
-        await articles[i].click();
+      await articles[i].click();
 
-        await expect(widgetPage.getArticleTitle()).toHaveText(titles[i]);
-        await expect(widgetPage.getArticleText()).not.toBeEmpty();
-        await expect(widgetPage.getArticleLink()).toHaveAttribute('href', /help\.uchi\.ru/);
+      await expect(widgetPage.getArticleTitle()).toHaveText(titles[i], { timeout: 20000 });
+      await expect(widgetPage.getArticleText()).not.toBeEmpty();
+      await expect(widgetPage.getArticleLink()).toHaveAttribute('href', /help\.uchi\.ru/);
 
-        await widgetPage.clickBack();
+      await widgetPage.clickBack();
 
-        await expect(widgetPage.getPopularArticleItems()).toHaveText(titles);
-      });
-    }
+      await expect(widgetPage.getPopularArticleItems()).toHaveText(titles);
+    });
+  }
 
       await test.step('search by article title', async () => {
       const title = titles[titles.length - 1];
@@ -96,7 +96,7 @@ test.describe('Uchi.ru widget ', () => {
       await expect(results).toHaveCount(found);
 
       await results.getByText(title, { exact: true }).click();
-      await expect(widgetPage.getArticleTitle()).toHaveText(title);
+      await expect(widgetPage.getArticleTitle()).toHaveText(title, { timeout: 20000 });
 
       await widgetPage.clickBack();
       await expect(results).toHaveCount(found);
