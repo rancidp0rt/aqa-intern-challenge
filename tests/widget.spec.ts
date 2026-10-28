@@ -60,4 +60,53 @@ test.describe('Uchi.ru widget ', () => {
 
     await expect(widgetPage.getTitle()).toBeVisible();
   });
+  test('opens popular articles and finds them in search', async () => {
+  
+    test.slow();
+
+    await widgetPage.openWidget();
+
+    const articles = await widgetPage.getPopularArticles();
+    const titles = await widgetPage.getPopularArticleItems().allInnerTexts();
+    expect(titles.length).toBeGreaterThan(0);
+
+    for (let i = 0; i < titles.length; i++) {
+      await test.step(`popular article "${titles[i]}"`, async () => {
+        await articles[i].click();
+
+        await expect(widgetPage.getArticleTitle()).toHaveText(titles[i]);
+        await expect(widgetPage.getArticleText()).not.toBeEmpty();
+        await expect(widgetPage.getArticleLink()).toHaveAttribute('href', /help\.uchi\.ru/);
+
+        await widgetPage.clickBack();
+
+        await expect(widgetPage.getPopularArticleItems()).toHaveText(titles);
+      });
+    }
+
+      await test.step('search by article title', async () => {
+      const title = titles[titles.length - 1];
+      await widgetPage.search(title);
+
+      const results = widgetPage.getSearchResults();
+      await expect(results.getByText(title, { exact: true })).toBeVisible();
+
+      const foundText = await widgetPage.getSearchFoundTitle().textContent();
+      const found = Number(foundText?.match(/\d+/)?.[0]);
+      await expect(results).toHaveCount(found);
+
+      await results.getByText(title, { exact: true }).click();
+      await expect(widgetPage.getArticleTitle()).toHaveText(title);
+
+      await widgetPage.clickBack();
+      await expect(results).toHaveCount(found);
+    });
+
+      await test.step('search with no results', async () => {
+      await widgetPage.search('qwzxjkq');
+
+      await expect(widgetPage.getSearchFoundTitle()).toHaveText('Нашлось 0 статей');
+      await expect(widgetPage.getSearchResults()).toHaveCount(0);
+    });
+  });
 });
